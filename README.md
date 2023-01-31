@@ -1,2 +1,2 @@
 # imatotext
-**Ima**ge **to** **text** convertor api
+`Ima`ge `to` `text` convertor api
