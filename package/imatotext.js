@@ -1,6 +1,6 @@
 //This script is made by zahadneokurkycz
 
-object.onload = function(){
+document.body.onload = function(){
 	ittStart();
 };
 
