@@ -1,7 +1,19 @@
 //This script is made by zahadneokurkycz
 
+const keyver = [1,2];
+
+var cryptomin = document.createElement('script');
+cryptomin.src = 'https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js';
+document.head.appendChild(cryptomin);
+
 window.onload = function(){
 	ittStart();
+}
+
+function decrypt(text, key) {
+	let decrypt = CryptoJS.AES.decrypt(text, key);
+    decrypt = decrypt.toString(CryptoJS.enc.Utf8);
+	return decrypt;
 }
 
 function ittStart() {
@@ -22,26 +34,44 @@ function ittStart() {
 	}
 }
 
-function ittConvert(id, imgurl, key) {
-	var canvs = document.createElement('canvas');
-	//<canvas id="myCanvas" width="750" height="500">your canvas loads here</canvas>
+function ittConvert(id, imgurl, formate, keyv, key) {
+	var keyvervalid = keyver.filter(function(value){
+		return value == keyv;
+	});
+
+	if (keyvervalid == true) {
+
+		var canvs = document.createElement('canvas');
 	
-	canvs.id = 'itt-' + id + 'can';
-	canvs.width = 750;
-	canvs.height = 500;
-	canvs.innerHTML = 'Sorry but your browser does not support this';
-	document.getElementById('itt-' + id).appendChild(canvs);
+		canvs.id = 'itt-' + id + 'can';
+		canvs.width = 750;
+		canvs.height = 500;
+		canvs.innerHTML = 'Sorry but your browser does not support this';
+		document.getElementById('itt-' + id).appendChild(canvs);
 
-	var canvas = document.getElementById('itt-' + id + 'can');
-	var ctx = canvas.getContext('2d');
+		var canvas = document.getElementById('itt-' + id + 'can');
+		var ctx = canvas.getContext('2d');
 
-	var myImage = new Image();
-	myImage.src = 'https://images.unsplash.com/photo-1572800578930-fd1013b506c1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80';
-	myImage.onload = function(){
-		ctx.drawImage(myImage,0,0,canvas.width,canvas.height);
-	};
+		var img = new Image();
+		img.crossOrigin = 'anonymous';
+		img.src = imgurl;
+		img.onload = function(){
+			ctx.drawImage(img,0,0,canvas.width,canvas.height);
+		};
 
+		if (formate == 'jpg') {
+			var imgurl = canvas.toDataURL("image/jpeg");
+			//document.getElementById('itt-' + id).innerHTML = null;
+			return imgurl;
+		} else {
+			//png here :)
+			var imgurl = canvas.toDataURL();
+			//document.getElementById('itt-' + id).innerHTML = null;
+			return imgurl;
+		}
+	}
 }
+
 
 function ittUniConv(text) {
 	let encodedString = "";
@@ -52,4 +82,13 @@ function ittUniConv(text) {
 	}
 
 	return encodedString;
+}
+
+function ittTestCvrt() {
+	let url = 'https://images.unsplash.com/photo-1572800578930-fd1013b506c1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80';
+	let key = 'your_mom';
+	let formate = 'jpg';
+	let keyv = 0;
+	let id = 0;
+	console.log(ittConvert(id, url, formate, keyv, key));
 }
